@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<link rel="stylesheet" type="text/css" href="estilo/estilo.css">
+
+	<link rel="stylesheet" type="text/css" href="estilo/estilo_geral.css">
+
+	 <script type="text/javascript" src="js/mtel.js"></script> 
+
+		<title>Desafio Elo</title>
+
+<script type="text/javascript">
+
+function validarFormulario(){
+
+	var formulario = document.forms["form_cadastro"]
+
+	var nome = formulario.nome.value
+	var telefone = formulario.telefone.value	
+	var optionCheck = formulario.optionCheck.value
+
+	var erro = false 
+	if (nome.indexOf(" ") == -1){
+		alert("O campo nome deve conter ao menos um sobrenome.")
+		erro = true
+	}
+
+	if (telefone.length != 13){
+		alert("Formato de número incorreto")
+		erro = true
+	}
+
+	if (optionCheck == "NULL"){
+		alert("Selecione Sim ou Não para rede sociais")		
+	}
+
+	if (optionCheck == "s"){
+
+		cadastrarCandidato01();		
+		
+	} else cadastrarCandidato02();
+	
+return false
+
+}
+
+function cadastrarCandidato01(){
+
+
+var nome = document.getElementById("nome"); 
+var telefone = document.getElementById("telefone"); 
+var select = document.getElementById("select"); 
+
+var checks = document.querySelectorAll("input[type='checkbox']:checked"),
+        i = checks.length,
+        arr = [];
+
+    while (i--) {
+        arr.push(" " + checks[i].value);
+    }
+
+
+
+    var dados = JSON.parse(localStorage.getItem("dadosCandidato"));
+
+    if(dados == null){
+    	localStorage.setItem("dadosCandidato", "[]");
+    	dados = [];
+    	}
+
+    	var auxRegistro = {
+    		auxNome: nome.value,
+    		auxTelefone: telefone.value,
+    		auxSelect: select.value,    		
+    		auxMedia: arr.value
+    	}
+
+    	dados.push(auxRegistro);
+
+    	localStorage.setItem("dadosCandidato", JSON.stringify(dados)),
+
+    	alert("Candidato cadastrado com sucesso!")
+
+    	document.getElementById("enviar").disabled = true
+
+
+		return false	
+		
+}
+
+function cadastrarCandidato02(){
+
+var nome = document.getElementById("nome"); 
+var telefone = document.getElementById("telefone"); 
+var select = document.getElementById("select"); 	
+
+     var dados = JSON.parse(localStorage.getItem("dadosCandidato"));
+
+    if(dados == null){
+    	localStorage.setItem("dadosCandidato", "[]");
+    	dados = [];
+    	}
+
+    	var auxRegistro = {
+    		auxNome: nome.value,
+    		auxTelefone: telefone.value,
+    		auxSelect: select.value	
+    		
+    	}
+
+    	dados.push(auxRegistro);
+
+    	localStorage.setItem("dadosCandidato", JSON.stringify(dados)),
+    	alert("Candidato cadastrado com sucesso!")
+
+    	document.getElementById("enviar").disabled = true
+
+		return false	
+
+}
+
+
+function abrirOpcoes(){
+
+	 document.getElementById("hidden_option").style.display = "block";
+
+}
+
+function fecharOpcoes(){
+
+	 document.getElementById("hidden_option").style.display = "none";
+
+}
+
+
+
+</script>
+
+</head>
+<body>
+
+	
+
+<section id="main_body" name="main_body"> 
+<form name="form_cadastro" action="exemplo.php" method="post" onsubmit="return validarFormulario()">
+
+	<h2>Desafio de Programação</h2>
+	<label for="nome"> Nome Completo: </label><br/>
+	<input class="form-control" id="nome" placeholder="João Martins da Silva" type="text" name="nome"><br/>
+
+	<label for="telefone"> Telefone: </label><br/>
+	<input class="form-control" onkeyup="mascara( this, mtel );" id="telefone" maxlength="13" placeholder="99 – 99999999" type="text" name="telefone"><br/>
+
+	<div class="form-group">
+	<label for="escolha_opcao"> Como nos conheceu: </label>
+	<select name="select" id="select" class="form-control">		
+  		<option value="tv">Tv</option>
+ 		 <option value="internet" >Internet</option>  		
+ 		 <option value="outros">Outros</option> 		 
+	</select>
+
+</div>
+	
+
+	<label for="escolha_opcao"> Possui rede social: </label><br/>
+
+
+	<input type="radio" name="optionCheck" onclick="abrirOpcoes()" id="media_option" value="s">
+	<label for="option1">Sim</label><br>
+	<input type="radio" onclick="fecharOpcoes()" name="optionCheck" value="n">
+	<label for="option2">Não</label><br><br/>
+
+	<div id="hidden_option" style="display: none;">
+
+		<label for="rede_social"> Quais: </label>	
+
+
+
+	<div class="form-check form-check-inline">
+   			<input type="checkbox" class="checks" name="social_media" value="facebook" id="social_media" ><label> Facebook </label><br/>
+   	</div>
+   	<div class="form-check form-check-inline">
+			<input type="checkbox" class="checks" id="social_media" class="form-check-input" name="social_media" value="linkedin">
+			<label lass="form-check-label" for="linkedin"> Linkedin </label><br/>
+	</div>
+	<div class="form-check form-check-inline">
+			<input type="checkbox" class="checks" id="social_media" class="form-check-input" name="social_media" value="instagram" >
+			<label lass="form-check-label" for="instagram"> Instagram </label><br/>
+	</div>
+	
+
+  		</div>
+<p>
+        <input type="submit" value="Enviar" class="btn btn-primary" id="enviar" />
+    </p>
+		
+
+
+</form>
+
+</section>
+
+</body>
+</html>
